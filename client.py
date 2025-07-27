@@ -1,32 +1,35 @@
 import socket
 import threading
 
-def recibir_mensajes(sock):
-    while True:
+def recibir_mensajes(sock, stop_event):
+    while not stop_event.is_set():
         try:
             mensaje = sock.recv(1024)
             if not mensaje:
-                print("El servidor cerró la conexión.")
+                print("Servidor desconectado.")
+                stop_event.set()
                 break
             print(mensaje.decode('utf-8'))
         except:
-            print("Error recibiendo mensaje. Desconectado.")
+            print("Error al recibir mensaje.")
+            stop_event.set()
             break
     sock.close()
-    print("Cerrando cliente...")
-    os._exit(0)  # mata la ejecucion
+    print("Hilo de recepción terminado.")
 
-def enviar_mensajes(sock):
+def enviar_mensajes(sock, stop_event):
     try:
-        while True:
+        while not stop_event.is_set():
             mensaje = input()
-            if mensaje.lower() == '/salir':
+            if mensaje.lower() == "/salir":
                 print("Desconectando...")
+                stop_event.set()
                 sock.close()
                 break
             sock.send(mensaje.encode('utf-8'))
     except (KeyboardInterrupt, EOFError):
         print("Cliente cerrado por el usuario.")
+        stop_event.set()
         sock.close()
 
 def main():
@@ -36,14 +39,21 @@ def main():
     cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         cliente.connect((host, puerto))
-        print("Conectado al servidor. Escribe tus mensajes:")
+        print("Conectado al servidor.")
     except:
         print("No se pudo conectar al servidor.")
-        return#pq devuelve nada
+        return
 
-    # Hilos separados para enviar y recibir
-    threading.Thread(target=recibir_mensajes, args=(cliente,), daemon=True).start()
-    enviar_mensajes(cliente)
+    stop_event = threading.Event()
 
-if __name__ == '__main__':
-    import os #cierra el programa aunque existan hilos activos, cambiar
+    hilo_receptor = threading.Thread(target=recibir_mensajes, args=(cliente, stop_event))
+    hilo_receptor.start()
+
+    enviar_mensajes(cliente, stop_event)
+
+    # Esperar que el hilo receptor termine antes de salir
+    hilo_receptor.join()
+    print("Cliente cerrado correctamente.")
+
+if __name__ == "__main__":
+    main()
