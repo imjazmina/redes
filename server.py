@@ -1,5 +1,6 @@
 import socket
 import threading
+from utils import validar_mensaje, formatear_mensaje
 
 clientes = set()
 lock = threading.Lock() #bloqueo de hilos
@@ -12,7 +13,12 @@ def manejar_cliente(cliente, direccion):
             if not mensaje:#si el cliente se cierra recibe una cadena vacía: b'' y rompe el bucle
                 break
 
-            mensaje_final = f"{direccion[0]}:{direccion[1]} dice: {mensaje.decode('utf-8')}"#de bytes a texto
+            texto = mensaje.decode('utf-8')
+
+            if not validar_mensaje(texto):
+                continue  #mensaje invalido, no se procesa
+
+            mensaje_final = formatear_mensaje(direccion, texto)
             print(mensaje_final)
 
             with lock:#si no se esta creando un nuevo hilo

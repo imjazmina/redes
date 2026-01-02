@@ -1,5 +1,6 @@
 import socket
 import threading
+from utils import validar_mensaje
 
 def recibir_mensajes(sock, stop_event):
     while not stop_event.is_set():
@@ -21,12 +22,19 @@ def enviar_mensajes(sock, stop_event):
     try:
         while not stop_event.is_set():
             mensaje = input()
+            
             if mensaje.lower() == "/salir":
                 print("Desconectando...")
                 stop_event.set()
                 sock.close()
                 break
+
+            if not validar_mensaje(mensaje):
+                print("Mensaje inválido. Intente nuevamente.")
+                continue
+
             sock.send(mensaje.encode('utf-8'))
+
     except (KeyboardInterrupt, EOFError):
         print("Cliente cerrado por el usuario.")
         stop_event.set()
