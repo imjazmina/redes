@@ -1,0 +1,14 @@
+Funciones criticas
+1. Manejo de conexiones y desconexiones de clientes.
+2. Broadcast.
+3. Manejo de errores de red y desconexiones abruptas.
+4. Manejo de multiples conexiones de forma recurrente. 
+
+| Función crítica        | Tipo de prueba     |
+| ---------------------- | ------------------ |
+| Validación de mensajes | Pruebas unitarias  |
+| Formateo de mensajes   | Pruebas unitarias  |
+| Broadcast              | Integración        |
+| Múltiples clientes     | Integración        |
+| Desconexión abrupta    | Integración        |
+| Manejo de errores      | Integración + unit |
