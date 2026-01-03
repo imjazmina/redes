@@ -29,3 +29,23 @@ test\test_utils.py ..........                                                   
 
 ========================================= 10 passed in 0.11s ========================================== 
 
+Pruebas de Integración.
+Caso 1: Conexion de un cliente al servidor.
+Caso 2: Multiples conexiones de clientes de forma simultanea.
+Caso 3: Envio y recepcion de mensaje entre clientes.
+Caso 4: Envio y recepcion de multiples mensajes simultaneos.
+Caso 5: Desconexión abrupta del cliente.
+
+Resultado
+PS C:\Users\Jazmin\OneDrive\Desktop\Penguin Academy\The Huddle\redes> python -m pytest
+>> 
+==================================================== test session starts ====================================================
+platform win32 -- Python 3.13.3, pytest-9.0.2, pluggy-1.6.0
+rootdir: C:\Users\Jazmin\OneDrive\Desktop\Penguin Academy\The Huddle\redes
+plugins: cov-7.0.0
+collected 15 items                                                                                                           
+
+test\test_integration.py .....                                                                                         [ 33%]
+test\test_utils.py ..........                                                                                          [100%]
+
+==================================================== 15 passed in 1.52s =====================================================
