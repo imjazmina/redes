@@ -49,3 +49,55 @@ test\test_integration.py .....                                                  
 test\test_utils.py ..........                                                                                          [100%]
 
 ==================================================== 15 passed in 1.52s =====================================================
+
+Test coverage: Porcentaje de codigo que esta siendo ejecutado por las Pruebas.
+Obs: server.py se ejecuta pero en OTRO proceso. Coverage NO puede ver lo que pasa ahí, pytest sí prueba el comportamiento del servidor,pero coverage no puede medirlo.
+Resultado coverage basico
+>> C:\Users\Jazmin\OneDrive\Desktop\Penguin Academy\The Huddle\redes>
+========================================= test session starts =========================================
+platform win32 -- Python 3.13.3, pytest-9.0.2, pluggy-1.6.0
+rootdir: C:\Users\Jazmin\OneDrive\Desktop\Penguin Academy\The Huddle\redes
+plugins: cov-7.0.0
+collected 15 items                                                                                     
+
+test\test_integration.py .....                                                                   [ 33%]
+test\test_utils.py ..........                                                                    [100%]
+
+=========================================== tests coverage ============================================
+___________________________ coverage: platform win32, python 3.13.3-final-0 ___________________________ 
+
+Name                       Stmts   Miss  Cover
+----------------------------------------------
+test\test_integration.py      68      2    97%
+test\test_utils.py            13      0   100%
+utils.py                       7      0   100%
+----------------------------------------------
+TOTAL                         88      2    98%
+========================================= 15 passed in 1.69s ==========================================
+
+Reporte detallado de coverage:
+python -m pytest --cov=server --cov=utils --cov-report=term-missing
+>> 
+==================================================== test session starts ==================================================== 
+platform win32 -- Python 3.13.3, pytest-9.0.2, pluggy-1.6.0
+rootdir: C:\Users\Jazmin\OneDrive\Desktop\Penguin Academy\The Huddle\redes
+plugins: cov-7.0.0
+collected 15 items                                                                                                            
+
+test\test_integration.py .....                                                                                         [ 33%] 
+test\test_utils.py ..........C:\Users\Jazmin\AppData\Roaming\Python\Python313\site-packages\coverage\inorout.py:497: CoverageWarning: Module server was never imported. (module-not-imported); see https://coverage.readthedocs.io/en/7.13.1/messages.html#warning-module-not-imported
+  self.warn(f"Module {pkg} was never imported.", slug="module-not-imported")
+                                                                                          [100%]
+
+====================================================== tests coverage ======================================================= 
+______________________________________ coverage: platform win32, python 3.13.3-final-0 ______________________________________ 
+
+Name       Stmts   Miss  Cover   Missing
+----------------------------------------
+utils.py       7      0   100%
+----------------------------------------
+TOTAL          7      0   100%
+==================================================== 15 passed in 1.63s ===================================================== 
+
+"Module {pkg} was never imported.", slug="module-not-imported". Como coverage solo mide código que se ejecuta dentro del mismo proceso de pytest, y el servidor se ejecuta en un subproceso. 
+Con las pruebas de integración validan su comportamiento 
